@@ -1,0 +1,6 @@
+.firebase
+build
+node_modules
+public
+craco.config.js
+tailwind.config.js

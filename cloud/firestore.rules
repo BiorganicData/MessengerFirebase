@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /User/{user} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /Presence/{user} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /Workspace/{workspace} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /Direct/{direct} {
+      allow read: if isMember(resource.data.active);
+      allow write: if false;
+    }
+    match /Message/{message} {
+      allow read: if isMember(get(/databases/$(database)/documents/$(resource.data.chatType)/$(resource.data.chatId)).data.members);
+      allow write: if false;
+    }
+    match /Channel/{channel} {
+      allow read: if isMember(get(/databases/$(database)/documents/Workspace/$(resource.data.workspaceId)).data.members);
+      allow write: if false;
+    }
+    match /Detail/{detail} {
+      allow read: if isUser(resource.data.userId);
+      allow write: if false;
+    }
+
+    function isMember(members) {
+      return request.auth.uid in members;
+    }
+    function isUser(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+    function isSignedIn() {
+      return request.auth.uid != null;
+    }
+  }
+}
