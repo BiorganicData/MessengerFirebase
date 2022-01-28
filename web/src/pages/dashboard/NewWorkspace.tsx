@@ -19,31 +19,41 @@ const tabs = [{ name: 'Create' }, { name: 'Join' }];
 
 export function TabLists() {
   return (
-    <div>
+    <div className="mt-5">
       <div className="hidden sm:block">
-        <div className="border-b th-border-for">
-          <nav className="-mb-px flex w-full" aria-label="Tabs">
-            {tabs.map((tab) => (
-              <Tab.List key={tab.name} className="w-1/2 text-center">
-                <Tab as={Fragment}>
-                  {({ selected }) => (
-                    <button
+        <nav
+          className="group p-0.5 rounded-lg flex bg-gray-100 hover:bg-gray-200"
+          aria-label="Tabs"
+        >
+          {tabs.map((tab) => (
+            <Tab.List key={tab.name} className="w-1/2 text-center flex">
+              <Tab as={Fragment}>
+                {({ selected }) => (
+                  <button
+                    className={classNames(
+                      selected
+                        ? "flex rounded-md focus:outline-none"
+                        : "px-auto rounded-md flex items-center text-sm text-gray-600 font-medium focus:outline-none",
+                      "flex-1 flex"
+                    )}
+                    aria-current={selected ? "page" : undefined}
+                  >
+                    <span
                       className={classNames(
                         selected
-                          ? 'th-border-blue th-color-blue'
-                          : 'border-transparent th-color-for',
-                        'py-4 px-1 font-bold text-sm border-b-2 w-full focus:outline-none'
+                          ? "bg-white shadow-sm ring-1 ring-black ring-opacity-5"
+                          : "",
+                        "p-1.5 lg:pl-2.5 lg:pr-3.5 rounded-md flex justify-center items-center text-sm font-medium flex-1"
                       )}
-                      aria-current={selected ? 'page' : undefined}
                     >
                       {tab.name}
-                    </button>
-                  )}
-                </Tab>
-              </Tab.List>
-            ))}
-          </nav>
-        </div>
+                    </span>
+                  </button>
+                )}
+              </Tab>
+            </Tab.List>
+          ))}
+        </nav>
       </div>
     </div>
   );
